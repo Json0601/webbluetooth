@@ -243,8 +243,8 @@ export class SimplebleAdapter extends EventEmitter implements BluetoothAdapter {
         return [];
     }
 
-    public async discoverCharacteristics(serviceUuid: string, characteristicUUIDs?: Array<string>): Promise<Array<Partial<BluetoothRemoteGATTCharacteristicImpl>>> {
-        const peripheral = this.peripheralByService.get(serviceUuid);
+    public async discoverCharacteristics(serviceUuid: string, deviceName: string, characteristicUUIDs?: Array<string>): Promise<Array<Partial<BluetoothRemoteGATTCharacteristicImpl>>> {
+        const peripheral = this.peripheralByDeviceName.get(deviceName);
         const characteristics = this.characteristicsByService.get(serviceUuid);
         const discovered = [];
 
@@ -271,19 +271,19 @@ export class SimplebleAdapter extends EventEmitter implements BluetoothAdapter {
 
                 if (characteristic.canIndicate) {
                     peripheral.indicate(serviceUuid, charUUID, data => {
-                        if (this.charEvents.has(charUUID)) {
+                        if (this.charEvents.has(deviceName)) {
                             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                            this.charEvents.get(charUUID)!(new DataView(data.buffer));
+                            this.charEvents.get(deviceName)!(new DataView(data.buffer));
                         }
                     });
                 }
 
                 if (characteristic.canNotify) {
                     peripheral.notify(serviceUuid, charUUID, data => {
-                        if (this.charEvents.has(charUUID)) {
+                        if (this.charEvents.has(deviceName)) {
                             console.log("asdf");
                             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                            this.charEvents.get(charUUID)!(new DataView(data.buffer));
+                            this.charEvents.get(deviceName)!(new DataView(data.buffer));
                         }
                     });
                 }

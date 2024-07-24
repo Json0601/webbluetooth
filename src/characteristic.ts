@@ -233,7 +233,7 @@ export class BluetoothRemoteGATTCharacteristicImpl extends EventDispatcher<Chara
             throw new Error('startNotifications error: device not connected');
         }
 
-        await adapter.enableNotify(this.handle, dataView => {
+        await adapter.enableNotify(this.service.device.name, dataView => {
             this.setValue(dataView, true);
         });
 
@@ -249,7 +249,7 @@ export class BluetoothRemoteGATTCharacteristicImpl extends EventDispatcher<Chara
             throw new Error('stopNotifications error: device not connected');
         }
 
-        await adapter.disableNotify(this.handle);
+        await adapter.disableNotify(this.service.device.name);
         return this;
     }
 }
