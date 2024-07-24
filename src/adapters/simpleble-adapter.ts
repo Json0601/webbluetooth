@@ -309,9 +309,9 @@ export class SimplebleAdapter extends EventEmitter implements BluetoothAdapter {
         return discovered;
     }
 
-    public async readCharacteristic(charUuid: string): Promise<DataView> {
+    public async readCharacteristic(charUuid: string, deviceName: string): Promise<DataView> {
         const serviceUuid = this.serviceByCharacteristic.get(charUuid);
-        const peripheral = this.peripheralByService.get(serviceUuid);
+        const peripheral = this.peripheralByDeviceName.get(deviceName);
         const data = peripheral.read(serviceUuid, charUuid);
         return new DataView(data.buffer);
     }

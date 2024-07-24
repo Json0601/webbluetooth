@@ -172,7 +172,7 @@ export class BluetoothRemoteGATTCharacteristicImpl extends EventDispatcher<Chara
             throw new Error('readValue error: device not connected');
         }
 
-        const dataView = await adapter.readCharacteristic(this.handle);
+        const dataView = await adapter.readCharacteristic(this.handle, this.service.device.name);
         this.setValue(dataView, true);
         return dataView;
     }
@@ -188,7 +188,6 @@ export class BluetoothRemoteGATTCharacteristicImpl extends EventDispatcher<Chara
 
         const arrayBuffer = isView(value) ? value.buffer : value;
         const dataView = new DataView(arrayBuffer);
-        console.log(this.service.device.name);
         await adapter.writeCharacteristic(this.handle, this.service.device.name, dataView);
         this.setValue(dataView);
     }
