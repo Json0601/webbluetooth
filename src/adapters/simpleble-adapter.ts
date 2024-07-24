@@ -320,7 +320,7 @@ export class SimplebleAdapter extends EventEmitter implements BluetoothAdapter {
     public async writeCharacteristic(charUuid: string, deviceName: string, value: DataView, withoutResponse = false): Promise<void> {
         const serviceUuid = this.serviceByCharacteristic.get(charUuid);
         const peripheral = this.peripheralByDeviceName.get(deviceName);
-        console.log(peripheral);
+        console.log(peripheral, deviceName);
         let success = false;
 
         if (withoutResponse) {
