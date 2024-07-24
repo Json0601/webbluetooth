@@ -47,6 +47,7 @@ export class SimplebleAdapter extends EventEmitter implements BluetoothAdapter {
     private peripherals = new Map<string, Peripheral>();
     private servicesByPeripheral = new Map<Peripheral, Service[]>();
     private peripheralByService = new Map<string, Peripheral>();
+    private peripheralByDeviceName = new Map<string, Peripheral>();
     private serviceByCharacteristic = new Map<string, string>();
     private characteristicsByService = new Map<string, Characteristic[]>();
     private characteristicByDescriptor = new Map<string, { char: string, desc: string }>();
@@ -108,12 +109,14 @@ export class SimplebleAdapter extends EventEmitter implements BluetoothAdapter {
     private enumerate(peripheral: Peripheral): void {
         this.servicesByPeripheral.clear();
         this.peripheralByService.clear();
+        this.peripheralByDeviceName.clear();
         this.serviceByCharacteristic.clear();
         this.characteristicsByService.clear();
         this.characteristicByDescriptor.clear();
         this.descriptors.clear();
         this.charEvents.clear();
-        console.log(peripheral.address, peripheral.identifier);
+        
+        this.peripheralByDeviceName.set(peripheral.identifier, peripheral);
 
         const services: Service[] = [];
         for (const service of peripheral.services) {
@@ -313,9 +316,9 @@ export class SimplebleAdapter extends EventEmitter implements BluetoothAdapter {
         return new DataView(data.buffer);
     }
 
-    public async writeCharacteristic(charUuid: string, value: DataView, withoutResponse = false): Promise<void> {
+    public async writeCharacteristic(charUuid: string, deviceName: string, value: DataView, withoutResponse = false): Promise<void> {
         const serviceUuid = this.serviceByCharacteristic.get(charUuid);
-        const peripheral = this.peripheralByService.get(serviceUuid);
+        const peripheral = this.peripheralByDeviceName.get(deviceName);
         let success = false;
 
         if (withoutResponse) {

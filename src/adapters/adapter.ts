@@ -43,7 +43,7 @@ export interface Adapter extends EventEmitter {
     discoverCharacteristics: (handle: string, characteristicUUIDs?: Array<string>) => Promise<Array<Partial<BluetoothRemoteGATTCharacteristicImpl>>>;
     discoverDescriptors: (handle: string, descriptorUUIDs?: Array<string>) => Promise<Array<Partial<BluetoothRemoteGATTDescriptorImpl>>>;
     readCharacteristic: (handle: string) => Promise<DataView>;
-    writeCharacteristic: (handle: string, value: DataView, withoutResponse?: boolean) => Promise<void>;
+    writeCharacteristic: (handle: string, deviceName: string, value: DataView, withoutResponse?: boolean) => Promise<void>;
     enableNotify: (handle: string, notifyFn: () => void) => Promise<void>;
     disableNotify: (handle: string) => Promise<void>;
     readDescriptor: (handle: string) => Promise<DataView>;

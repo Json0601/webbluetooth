@@ -189,7 +189,7 @@ export class BluetoothRemoteGATTCharacteristicImpl extends EventDispatcher<Chara
         const arrayBuffer = isView(value) ? value.buffer : value;
         const dataView = new DataView(arrayBuffer);
 
-        await adapter.writeCharacteristic(this.handle, dataView);
+        await adapter.writeCharacteristic(this.handle, this.service.device.name, dataView);
         this.setValue(dataView);
     }
 
@@ -205,7 +205,7 @@ export class BluetoothRemoteGATTCharacteristicImpl extends EventDispatcher<Chara
         const arrayBuffer = isView(value) ? value.buffer : value;
         const dataView = new DataView(arrayBuffer);
 
-        await adapter.writeCharacteristic(this.handle, dataView, false);
+        await adapter.writeCharacteristic(this.handle, this.service.device.name, dataView, false);
         this.setValue(dataView);
     }
 
@@ -221,7 +221,7 @@ export class BluetoothRemoteGATTCharacteristicImpl extends EventDispatcher<Chara
         const arrayBuffer = isView(value) ? value.buffer : value;
         const dataView = new DataView(arrayBuffer);
 
-        await adapter.writeCharacteristic(this.handle, dataView, true);
+        await adapter.writeCharacteristic(this.handle, this.service.device.name, dataView, true);
         this.setValue(dataView);
     }
 
