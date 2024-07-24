@@ -9,12 +9,13 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Example",
-            "program": "${workspaceFolder}/examples/selector.js",
+            "program": "${workspaceFolder}/examples/test.ts",
             "outFiles": [
                 "${workspaceFolder}/examples/**/*.js",
                 "${workspaceFolder}/dist/**/*.js"
             ],
-            "sourceMaps": true
+            "sourceMaps": true,
+            "runtimeArgs": ["-r", "ts-node/register"]
         }
     ]
 }
