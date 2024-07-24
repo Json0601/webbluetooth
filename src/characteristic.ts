@@ -188,7 +188,7 @@ export class BluetoothRemoteGATTCharacteristicImpl extends EventDispatcher<Chara
 
         const arrayBuffer = isView(value) ? value.buffer : value;
         const dataView = new DataView(arrayBuffer);
-
+        console.log(this.service.device.name);
         await adapter.writeCharacteristic(this.handle, this.service.device.name, dataView);
         this.setValue(dataView);
     }

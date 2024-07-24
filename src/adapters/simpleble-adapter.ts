@@ -115,8 +115,7 @@ export class SimplebleAdapter extends EventEmitter implements BluetoothAdapter {
         this.characteristicByDescriptor.clear();
         this.descriptors.clear();
         this.charEvents.clear();
-        
-        this.peripheralByDeviceName.set(peripheral.identifier, peripheral);
+
 
         const services: Service[] = [];
         for (const service of peripheral.services) {
@@ -138,6 +137,7 @@ export class SimplebleAdapter extends EventEmitter implements BluetoothAdapter {
         }
 
         this.servicesByPeripheral.set(peripheral, services);
+        this.peripheralByDeviceName.set(peripheral.identifier, peripheral);
     }
 
     private get state(): boolean {
@@ -319,6 +319,7 @@ export class SimplebleAdapter extends EventEmitter implements BluetoothAdapter {
     public async writeCharacteristic(charUuid: string, deviceName: string, value: DataView, withoutResponse = false): Promise<void> {
         const serviceUuid = this.serviceByCharacteristic.get(charUuid);
         const peripheral = this.peripheralByDeviceName.get(deviceName);
+        console.log(peripheral);
         let success = false;
 
         if (withoutResponse) {
