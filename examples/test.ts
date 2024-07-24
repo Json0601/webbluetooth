@@ -15,6 +15,26 @@ bluetooth.requestDevice({
 	]
 });
 
+const enumerateGatt = async server => {
+	const services = await server.getPrimaryServices();
+	const sPromises = services.map(async service => {
+			const characteristics = await service.getCharacteristics();
+			const cPromises = characteristics.map(async characteristic => {
+					let descriptors = await characteristic.getDescriptors();
+					descriptors = descriptors.map(descriptor => `\t\t└descriptor: ${descriptor.uuid}`);
+					descriptors.unshift(`\t└characteristic: ${characteristic.uuid}`);
+					return descriptors.join("\n");
+			});
+
+			const descriptors = await Promise.all(cPromises);
+			descriptors.unshift(`service: ${service.uuid}`);
+			return descriptors.join("\n");
+	});
+
+	const result = await Promise.all(sPromises);
+	console.log(result.join("\n"));
+};
+
 async function connect(device: BluetoothDevice) {
 	try {
 		device.ongattserverdisconnected = (event) => {
@@ -24,6 +44,7 @@ async function connect(device: BluetoothDevice) {
 			}
 		}
 		const server = await device.gatt?.connect();
+		// await enumerateGatt(server);†
 		const service = await server?.getPrimaryService(0x00ff);
 		const characteristic = await service?.getCharacteristic(0xff01);
 		if(characteristic) {

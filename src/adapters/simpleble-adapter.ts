@@ -109,12 +109,12 @@ export class SimplebleAdapter extends EventEmitter implements BluetoothAdapter {
     private enumerate(peripheral: Peripheral): void {
         this.servicesByPeripheral.clear();
         this.peripheralByService.clear();
-        this.peripheralByDeviceName.clear();
+        // this.peripheralByDeviceName.clear();
         this.serviceByCharacteristic.clear();
         this.characteristicsByService.clear();
         this.characteristicByDescriptor.clear();
         this.descriptors.clear();
-        this.charEvents.clear();
+        // this.charEvents.clear();
 
 
         const services: Service[] = [];
@@ -281,7 +281,7 @@ export class SimplebleAdapter extends EventEmitter implements BluetoothAdapter {
                 if (characteristic.canNotify) {
                     peripheral.notify(serviceUuid, charUUID, data => {
                         if (this.charEvents.has(deviceName)) {
-                            console.log("asdf");
+                            console.log(deviceName);
                             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                             this.charEvents.get(deviceName)!(new DataView(data.buffer));
                         }
@@ -335,7 +335,9 @@ export class SimplebleAdapter extends EventEmitter implements BluetoothAdapter {
     }
 
     public async enableNotify(handle: string, notifyFn: (value: DataView) => void): Promise<void> {
+        console.log(handle);
         this.charEvents.set(handle, notifyFn);
+        console.log(this.charEvents);
     }
 
     public async disableNotify(handle: string): Promise<void> {
