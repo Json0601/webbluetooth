@@ -281,6 +281,7 @@ export class SimplebleAdapter extends EventEmitter implements BluetoothAdapter {
                 if (characteristic.canNotify) {
                     peripheral.notify(serviceUuid, charUUID, data => {
                         if (this.charEvents.has(charUUID)) {
+                            console.log("asdf");
                             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                             this.charEvents.get(charUUID)!(new DataView(data.buffer));
                         }
