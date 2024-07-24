@@ -113,6 +113,7 @@ export class SimplebleAdapter extends EventEmitter implements BluetoothAdapter {
         this.characteristicByDescriptor.clear();
         this.descriptors.clear();
         this.charEvents.clear();
+        console.log(peripheral.address, peripheral.identifier);
 
         const services: Service[] = [];
         for (const service of peripheral.services) {
