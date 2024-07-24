@@ -1,8 +1,9 @@
 const { Bluetooth } = require("../dist");
 
 const devices: BluetoothDevice[] = [];
+const characteristics: BluetoothRemoteGATTCharacteristic[] = [];
 
-const bluetooth = new Bluetooth({ scanTime: 30, deviceFound: (device: BluetoothDevice, _selectFn) => {
+const bluetooth = new Bluetooth({ scanTime: 300, deviceFound: (device: BluetoothDevice, _selectFn) => {
 	devices.push(device);
 	connect(device);
 	return false;
@@ -44,9 +45,10 @@ async function connect(device: BluetoothDevice) {
 			}
 		}
 		const server = await device.gatt?.connect();
-		// await enumerateGatt(server);†
+		await enumerateGatt(server);
 		const service = await server?.getPrimaryService(0x00ff);
 		const characteristic = await service?.getCharacteristic(0xff01);
+		characteristics.push(characteristic!);
 		if(characteristic) {
 			console.log(`${device.name} connected`);
 			await characteristic.startNotifications();
@@ -68,6 +70,10 @@ async function connect(device: BluetoothDevice) {
 }
 
 (async () => {
+	await keypress();
+	characteristics.forEach((v) => v.writeValue(new Uint8Array([0x73])))
+	await keypress();
+	characteristics.forEach((v) => v.writeValue(new Uint8Array([0x74])))
 	await keypress();
 })().then(() => process.exit());
 

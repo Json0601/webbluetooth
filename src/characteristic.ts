@@ -103,9 +103,9 @@ export class BluetoothRemoteGATTCharacteristicImpl extends EventDispatcher<Chara
         this._value = value;
         if (emit) {
             this.dispatchEvent(new DOMEvent(this, 'characteristicvaluechanged'));
-            this.service.dispatchEvent(new DOMEvent(this, 'characteristicvaluechanged'));
-            this.service.device.dispatchEvent(new DOMEvent(this, 'characteristicvaluechanged'));
-            this.service.device._bluetooth.dispatchEvent(new DOMEvent(this, 'characteristicvaluechanged'));
+            // this.service.dispatchEvent(new DOMEvent(this, 'characteristicvaluechanged'));
+            // this.service.device.dispatchEvent(new DOMEvent(this, 'characteristicvaluechanged'));
+            // this.service.device._bluetooth.dispatchEvent(new DOMEvent(this, 'characteristicvaluechanged'));
         }
     }
 
