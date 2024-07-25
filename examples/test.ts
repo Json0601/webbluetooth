@@ -12,7 +12,6 @@ const bluetooth = new Bluetooth({ scanTime: 300, deviceFound: (device: Bluetooth
 bluetooth.requestDevice({
 	filters: [
 		{ namePrefix: "exoPill" },
-		{ namePrefix: "exoMini" }
 	]
 });
 
@@ -71,7 +70,7 @@ async function connect(device: BluetoothDevice) {
 
 (async () => {
 	await keypress();
-	characteristics.forEach((v) => v.writeValue(new Uint8Array([0x73])))
+	devices.forEach((v) => v.gatt?.disconnect())
 	await keypress();
 	characteristics.forEach((v) => v.writeValue(new Uint8Array([0x74])))
 	await keypress();

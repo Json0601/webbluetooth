@@ -52,6 +52,7 @@ export class SimplebleAdapter extends EventEmitter implements BluetoothAdapter {
     private characteristicByDescriptor = new Map<string, { char: string, desc: string }>();
     private descriptors = new Map<string, string[]>();
     private charEvents = new Map<string, (value: DataView) => void>();
+    private found = new Array<string>();
 
     private validDevice(device: Partial<BluetoothDeviceImpl>, serviceUUIDs: Array<string>): boolean {
         if (serviceUUIDs.length === 0) {
@@ -158,7 +159,8 @@ export class SimplebleAdapter extends EventEmitter implements BluetoothAdapter {
         this.adapter.setCallbackOnScanFound(peripheral => {
             const device = this.buildBluetoothDevice(peripheral);
             if (this.validDevice(device, serviceUUIDs)) {
-                if (!this.peripherals.has(device.id)) {
+                if (!this.found.includes(device.id)) {
+                    this.found.push(device.id);
                     this.peripherals.set(device.id, peripheral);
                     // Only call the found function the first time we find a valid device
                     foundFn(device);
@@ -166,7 +168,7 @@ export class SimplebleAdapter extends EventEmitter implements BluetoothAdapter {
             }
         });
 
-        // this.peripherals.clear();
+        this.found.length = 0;
         const success = this.adapter.scanStart();
         if (!success) {
             throw new Error('scan start failed');
