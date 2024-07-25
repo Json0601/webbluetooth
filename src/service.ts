@@ -170,7 +170,7 @@ export class BluetoothRemoteGATTServiceImpl extends EventDispatcher<ServiceEvent
         }
 
         if (!this.characteristics) {
-            const characteristics = await adapter.discoverCharacteristics(this.handle, this.device.name);
+            const characteristics = await adapter.discoverCharacteristics(this.handle, this.device.id);
             this.characteristics = characteristics.map(characteristicInfo => {
                 Object.assign(characteristicInfo, {
                     service: this

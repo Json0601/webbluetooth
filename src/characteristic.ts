@@ -172,7 +172,7 @@ export class BluetoothRemoteGATTCharacteristicImpl extends EventDispatcher<Chara
             throw new Error('readValue error: device not connected');
         }
 
-        const dataView = await adapter.readCharacteristic(this.handle, this.service.device.name);
+        const dataView = await adapter.readCharacteristic(this.handle, this.service.device.id);
         this.setValue(dataView, true);
         return dataView;
     }
@@ -188,7 +188,7 @@ export class BluetoothRemoteGATTCharacteristicImpl extends EventDispatcher<Chara
 
         const arrayBuffer = isView(value) ? value.buffer : value;
         const dataView = new DataView(arrayBuffer);
-        await adapter.writeCharacteristic(this.handle, this.service.device.name, dataView);
+        await adapter.writeCharacteristic(this.handle, this.service.device.id, dataView);
         this.setValue(dataView);
     }
 
@@ -204,7 +204,7 @@ export class BluetoothRemoteGATTCharacteristicImpl extends EventDispatcher<Chara
         const arrayBuffer = isView(value) ? value.buffer : value;
         const dataView = new DataView(arrayBuffer);
 
-        await adapter.writeCharacteristic(this.handle, this.service.device.name, dataView, false);
+        await adapter.writeCharacteristic(this.handle, this.service.device.id, dataView, false);
         this.setValue(dataView);
     }
 
@@ -220,7 +220,7 @@ export class BluetoothRemoteGATTCharacteristicImpl extends EventDispatcher<Chara
         const arrayBuffer = isView(value) ? value.buffer : value;
         const dataView = new DataView(arrayBuffer);
 
-        await adapter.writeCharacteristic(this.handle, this.service.device.name, dataView, true);
+        await adapter.writeCharacteristic(this.handle, this.service.device.id, dataView, true);
         this.setValue(dataView);
     }
 
@@ -233,7 +233,7 @@ export class BluetoothRemoteGATTCharacteristicImpl extends EventDispatcher<Chara
             throw new Error('startNotifications error: device not connected');
         }
 
-        await adapter.enableNotify(this.service.device.name, dataView => {
+        await adapter.enableNotify(this.service.device.id, dataView => {
             this.setValue(dataView, true);
         });
 
@@ -249,7 +249,7 @@ export class BluetoothRemoteGATTCharacteristicImpl extends EventDispatcher<Chara
             throw new Error('stopNotifications error: device not connected');
         }
 
-        await adapter.disableNotify(this.service.device.name);
+        await adapter.disableNotify(this.service.device.id);
         return this;
     }
 }
